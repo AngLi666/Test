@@ -1,4 +1,4 @@
-#include "def.h"
+#include "def.hpp"
 #include "ultis.hpp"
 #include "infer.hpp"
 #include <cstring>
@@ -10,7 +10,7 @@ InputDataInfoT p_input_data_info = (InputDataInfoT) getInputDataInfo();
 OutputDataInfoT p_output_data_info = (OutputDataInfoT) getOutputDataInfo();
 
 
-typedef struct prediction{
+typedef struct prediction_t{
     int pred;
 } PredictionT;
 
@@ -29,3 +29,5 @@ void predict(PredictionT* prediction);
 void init_infer();
 
 void close_infer();
+
+void init_infer_v2();

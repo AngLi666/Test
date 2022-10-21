@@ -1,4 +1,4 @@
-#include "def.h"
+#include "def.hpp"
 #include "network.hpp"
 
 
@@ -76,7 +76,15 @@ void predict(PredictionT* prediction)
 void init_infer()
 {
     load_bin(pWT, 25350, "./wt.bin");
-    load_bin(pBS, 440, "./bs.wt");
+    load_bin(pBS, 440, "./bs.bin");
+}
+
+
+
+void init_infer_v2()
+{
+    load_bin(pWT, 25350, "./wt.bin");
+    load_bin(pBS, 440, "./bs.bin");
 }
 
 

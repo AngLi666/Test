@@ -60,11 +60,8 @@ InputDataInfoT getInputDataInfo();
 OutputDataInfoT getOutputDataInfo();
 
 
-void init();
-
 void infer();
         
-
 void run_0010_conv2d_relu_maxpool2d();
 
 void run_0020_conv2d_relu_maxpool2d();
