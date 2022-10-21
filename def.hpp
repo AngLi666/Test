@@ -2,8 +2,8 @@
 typedef signed      char sint8_t;
 typedef unsigned    char uint8_t;
 
-#ifndef def_h
-#define def_h
+#ifndef def_hpp
+#define def_hpp
 
 typedef struct conv_cfg_t{
     /*
