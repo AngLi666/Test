@@ -1,4 +1,4 @@
-#include "def.hpp"
+#pragma once
 #include "network.hpp"
 
 

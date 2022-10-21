@@ -3,8 +3,8 @@
 #include "ultis.hpp"
 #include <stdlib.h>
 
-#ifndef infer_hpp
-#define infer_hpp
+// #ifndef infer_hpp
+// #define infer_hpp
 
 
 typedef struct input_data_info_t{
@@ -29,10 +29,10 @@ typedef struct output_data_info_t{
 } OutputDataInfoT;
 
 
-static sint8_t* pFM = (sint8_t*) malloc(2924);
-static sint8_t* pWT = (sint8_t*) malloc(25350);
-static int* pBS     = (int*) malloc(440);
-static float* pOUT  = (float*) malloc(10 * sizeof(float));
+sint8_t* pFM = (sint8_t*) malloc(2924);
+sint8_t* pWT = (sint8_t*) malloc(25350);
+int* pBS     = (int*) malloc(440);
+float* pOUT  = (float*) malloc(10 * sizeof(float));
 
 
 InputDataInfoT input_data_info = {
@@ -77,4 +77,4 @@ void run_0060_linear();
 void run_0070_logsoftmax();
 
 
-#endif
+// #endif

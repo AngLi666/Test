@@ -1,9 +1,7 @@
 
 // #pragma once
-#include "def.h"
 #include "ultis.hpp"
 #include "network.hpp"
-#include "infer.hpp"
 #include <iostream>
 
 
@@ -37,6 +35,9 @@ int main()
             gFlagInfer = false;
             std::cout << std::endl;
             std::cout << "Prediction = " << prediction.pred << std::endl;
+
+            char key;
+            std::cin >> key;
         }
         stl_sleep(10);
     } while(gKeepRunning);

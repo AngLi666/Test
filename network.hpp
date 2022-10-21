@@ -1,4 +1,3 @@
-#include "def.hpp"
 #include "ultis.hpp"
 #include "infer.hpp"
 #include <cstring>
