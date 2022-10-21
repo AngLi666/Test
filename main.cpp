@@ -3,6 +3,7 @@
 #include "def.h"
 #include "ultis.hpp"
 #include "network.hpp"
+#include "infer.hpp"
 #include <iostream>
 
 

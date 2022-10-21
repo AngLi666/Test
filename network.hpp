@@ -6,8 +6,8 @@
 
 
 
-InputDataInfoT* p_input_data_info = getInputDataInfo();
-OutputDataInfoT* p_output_data_info = getOutputDataInfo();
+InputDataInfoT p_input_data_info = (InputDataInfoT) getInputDataInfo();
+OutputDataInfoT p_output_data_info = (OutputDataInfoT) getOutputDataInfo();
 
 
 typedef struct prediction{

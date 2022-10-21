@@ -24,11 +24,11 @@ void runNetwork(PredictionT* prediction, float* inputFP32)
 void preprocess(float* inputFP32)
 {
     float*      p_fp32d = inputFP32;
-    sint8_t*    p_int8d = p_input_data_info->p_ifm_int8;
+    sint8_t*    p_int8d = p_input_data_info.p_ifm_int8;
     float       mean    = 0;
     float       rstd    = 128;
     float       temp    = 0;
-    for (int i = 0; i < p_input_data_info->nSize; ++i)
+    for (int i = 0; i < p_input_data_info.nSize; ++i)
     {
         temp = (*p_fp32d) * rstd;
         if (temp >127)
@@ -57,11 +57,11 @@ void postprocess()
 
 void predict(PredictionT* prediction)
 {
-    float*      p_val   = output_data_info.p_ofm_fp32;
+    float*      p_val   = p_output_data_info.p_ofm_fp32;
     int         maxIDX  = 0;
     int         maxVal  = 0;
 
-    for (int i = 0; i < output_data_info.nSize; ++i)
+    for (int i = 0; i < p_output_data_info.nSize; ++i)
     {
         if (*p_val > maxVal){
             maxVal = *p_val;

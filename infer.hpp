@@ -3,6 +3,9 @@
 #include "ultis.hpp"
 #include <stdlib.h>
 
+#ifndef infer_hpp
+#define infer_hpp
+
 
 typedef struct input_data_info_t{
     int             id;
@@ -41,6 +44,7 @@ InputDataInfoT input_data_info = {
     0,
     pFM
 };
+
 OutputDataInfoT output_data_info = {
     13,
     10,
@@ -52,8 +56,8 @@ OutputDataInfoT output_data_info = {
 };
 
 
-InputDataInfoT* getInputDataInfo();
-OutputDataInfoT* getOutputDataInfo();
+InputDataInfoT getInputDataInfo();
+OutputDataInfoT getOutputDataInfo();
 
 
 void init();
@@ -74,3 +78,6 @@ void run_0050_linear_relu();
 void run_0060_linear();
 
 void run_0070_logsoftmax();
+
+
+#endif

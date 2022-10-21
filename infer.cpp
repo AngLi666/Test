@@ -23,13 +23,13 @@ void infer()
 }
 
 
-InputDataInfoT* getInputDataInfo() 
+InputDataInfoT getInputDataInfo() 
 { 
-    return &input_data_info; 
+    return input_data_info; 
 }
-OutputDataInfoT* getOutputDataInfo() 
+OutputDataInfoT getOutputDataInfo() 
 { 
-    return &output_data_info; 
+    return output_data_info; 
 }
 
 
