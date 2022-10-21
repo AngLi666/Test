@@ -19,12 +19,12 @@ void cpu_op_logsoftmax(APICFG* pCFG)
     float softmax_denominator = 0;
 
     for (int i = 0; i < num; i++)  {
-        int inp = (int)(p_ifm + i);
+        int inp = int(*(p_ifm + i));
         softmax_denominator += exp(inp);
     }  
 
     for (int i = 0; i < num; i++) {
-        int inp = (int)(p_ifm + i);
+        int inp = int(*(p_ifm + i));
         float computed_value = exp(inp) / softmax_denominator;
         *p_ofm = log2(computed_value);
         p_ofm ++;

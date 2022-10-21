@@ -2,8 +2,9 @@
 typedef signed      char sint8_t;
 typedef unsigned    char uint8_t;
 
-// #ifndef def_hpp
-// #define def_hpp
+#ifndef DEF_HPP
+#define DEF_HPP
+
 
 typedef struct conv_cfg_t{
     /*
@@ -142,4 +143,5 @@ typedef struct api_cfg_t{
 } APICFG;
 
 
-// #endif
+#endif
+

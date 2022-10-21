@@ -13,7 +13,7 @@ int load_bin(void* buf, int buf_size, char* path)
 	fp = fopen(path, "rb");
 	if (fp == NULL) {
 		printf("\n#!!!nna_load_buf open file fail :%s ", path);
-		return;
+		return 0;
 	}
 
 	int sz = fread(buf, 1, buf_size, fp);
@@ -29,7 +29,7 @@ int save_bin(void* buf, int buf_size, char* path)
 	fp = fopen(path, "wb");
 	if (fp == NULL) {
 		printf("\n#!!!nna_save_buf open file fail :%s ", path);
-		return;
+		return 0;
 	}
 
 	int sz = fwrite(buf, 1, buf_size, fp);

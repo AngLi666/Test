@@ -41,7 +41,7 @@ int main()
             gFlagInfer = false;
             std::cout << std::endl;
             std::cout << "Prediction = " << prediction.pred << std::endl;
-
+            std::cout << "Input any key to finish:" << endl;
             char key;
             std::cin >> key;
         }

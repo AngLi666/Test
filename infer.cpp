@@ -23,16 +23,6 @@ void infer()
 }
 
 
-InputDataInfoT getInputDataInfo() 
-{ 
-    return input_data_info; 
-}
-OutputDataInfoT getOutputDataInfo() 
-{ 
-    return output_data_info; 
-}
-
-
 void run_0010_conv2d_relu_maxpool2d()
 {       
         

@@ -4,11 +4,6 @@
 
 
 
-
-InputDataInfoT p_input_data_info = (InputDataInfoT) getInputDataInfo();
-OutputDataInfoT p_output_data_info = (OutputDataInfoT) getOutputDataInfo();
-
-
 typedef struct prediction_t{
     int pred;
 } PredictionT;
