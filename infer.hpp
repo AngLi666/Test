@@ -1,6 +1,6 @@
 
-#include "./cpu_api/cpu_api.hpp"
-#include "./api/ultis.hpp"
+#include "cpu_api.hpp"
+#include "ultis.hpp"
 #include <stdlib.h>
 
 
