@@ -30,20 +30,28 @@ void getInputDataFP32(float* inputDataFP32)
 
 int main()
 {
+
+
     init_infer();
+
 
     do {
         float inputDataFP32[InputNSize] = {0,};
         getInputDataFP32(inputDataFP32);
         PredictionT prediction;
         if (gFlagInfer){
+    
+            std::cout << "Input any key to continue:" << std::endl;
+            std::system("pause");
             runNetwork(&prediction, inputDataFP32);
+            std::cout << "Input any key to continue:" << std::endl;
+            std::system("pause");
             gFlagInfer = false;
             std::cout << std::endl;
             std::cout << "Prediction = " << prediction.pred << std::endl;
-            std::cout << "Input any key to finish:" << endl;
-            char key;
-            std::cin >> key;
+            
+            std::cout << "Input any key to finish:" << std::endl;
+            std::system("pause");
         }
         stl_sleep(10);
     } while(gKeepRunning);
