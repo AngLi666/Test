@@ -10,28 +10,34 @@ bool gKeepRunning   = false;
 
 const int InputNSize = 784;
 uint8_t inputData[InputNSize] = {0,};
-void getInputDataFP32(float* inputFP32)
+
+void getInputDataFP32(float* inputDataFP32)
 {
     // 1. read image
 
     // 2. norm
+    uint8_t* pU8 = inputData;
+    float* pF32 = inputDataFP32;
     for (int i = 0; i < InputNSize; ++i)
     {
-        *(inputFP32+i) = *(inputData+i) / 255.0;
+        float t = (float) *pU8;
+        t = t / 255.0;
+        *pF32 = t;
+        pU8 ++;
+        pF32 ++;
     }
 }
 
-
 int main()
 {
-    
     init_infer();
+
     do {
-        float inputFP32[InputNSize] = {0,};
-        getInputDataFP32(inputFP32);
+        float inputDataFP32[InputNSize] = {0,};
+        getInputDataFP32(inputDataFP32);
         PredictionT prediction;
         if (gFlagInfer){
-            runNetwork(&prediction, inputFP32);
+            runNetwork(&prediction, inputDataFP32);
             gFlagInfer = false;
             std::cout << std::endl;
             std::cout << "Prediction = " << prediction.pred << std::endl;
@@ -44,8 +50,6 @@ int main()
 
     close_infer();
 }
-
-
 
 
 
