@@ -18,7 +18,7 @@ void cpu_op_out_cvt(APICFG* pCFG)
         nSize = in_n * in_c;
     }
 
-    int shift = pCFG->ofm_shift;\
+    int shift = pCFG->ofm_shift;
     if (shift > 0)
     {
         for (int i = 0; i < nSize; ++i)

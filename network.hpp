@@ -12,7 +12,7 @@ typedef struct prediction_t{
 
 void runNetwork(PredictionT* prediction, float* inputFP32);
 
-void loadWeights();
+//void loadWeights();
 
 void preprocess(float* inputFP32);
 
@@ -24,4 +24,4 @@ void init_infer();
 
 void close_infer();
 
-void init_infer_v2();
+

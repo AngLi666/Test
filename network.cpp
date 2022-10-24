@@ -57,9 +57,9 @@ void postprocess()
 
 void predict(PredictionT* prediction)
 {
-    float*      p_val   =output_data_info.p_ofm_fp32;
+    float*      p_val   = output_data_info.p_ofm_fp32;
     int         maxIDX  = 0;
-    int         maxVal  = 0;
+    float       maxVal  = *p_val;
 
     for (int i = 0; i < output_data_info.nSize; ++i)
     {
@@ -75,16 +75,11 @@ void predict(PredictionT* prediction)
 
 void init_infer()
 {
-    load_bin(pWT, 25350, "./wt.bin");
-    load_bin(pBS, 440, "./bs.bin");
-}
+    const char wt_path[] = "E:\\Testv0\\wt.bin";
+    const char bs_path[] = "E:\\Testv0\\bs.bin";
 
-
-
-void init_infer_v2()
-{
-    load_bin(pWT, 25350, "./wt.bin");
-    load_bin(pBS, 440, "./bs.bin");
+    load_bin(pWT, 25350, (char*)wt_path);
+    load_bin(pBS, 440, (char*)bs_path);
 }
 
 

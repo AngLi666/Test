@@ -1,4 +1,5 @@
 #include "cpu_op.hpp"
+#include <iostream>
 
 
 void conv_pad_int8(sint8_t* ofm, sint8_t* ifm, ConvCFG* pConvCFG)
@@ -64,6 +65,78 @@ void cpu_op_conv2d(APICFG* pCFG)
     int             st_h    = conv_cfg.kernel_stride_h;
     int             st_w    = conv_cfg.kernel_stride_w;
 
+
+    int batch = in_n;
+    // TODO: add group to conv_cfg
+    int group = 1;
+    int dilation_h = conv_cfg.kernel_dilation_h;
+    int dilation_w = conv_cfg.kernel_dilation_w;
+
+    int input_c = in_c / group;
+    int input_h = in_h;
+    int input_w = in_w;
+    int output_c = ou_c / group;
+    int output_h = ou_h;
+    int output_w = ou_w;
+
+    int kernel_size = input_c * wt_h * wt_w;
+    int n, g, c, h, w, kc, kh, kw;
+    int input_offset = 0;
+    int kernel_offset = 0;
+    int output_offset = 0;
+
+
+    for (n = 0; n < batch; ++n)
+    {
+        for (g = 0; g < group; ++g)
+        {
+            for (c = 0; c < output_c; ++c)
+            {
+                for (h = 0; h < output_h; ++h)
+                {
+                    for (w = 0; w < output_w; ++w)
+                    {
+                        const int h_start = (h * st_h) - pad_t;
+                        const int w_start = (w *st_w) - pad_l;
+                        int total = 0;
+
+                        output_offset = n * group * output_c * output_h * output_w + g * output_c * output_h * output_w + c * output_h * output_w + h * output_w + w;
+
+                        for (kc = 0; kc < input_c; ++kc)
+                        {
+                            for (kh = 0; kh < wt_h; ++kh)
+                            {
+                                for (kw = 0; kw < wt_w; ++kw)
+                                {
+                                    const int cur_y = h_start + dilation_h * kh;
+                                    const int cur_x = w_start + dilation_w * kw;
+                                    // If the location is outside the bounds of the input image,
+                                    // use zero as a default value.
+                                    if ((cur_x >= 0) && (cur_x < input_w) && (cur_y >= 0) && (cur_y < input_h))
+                                    {
+                                        input_offset = n * group * input_c * input_h * input_w + g * input_c * input_h * input_w + kc * input_h * input_w + cur_y * input_w + cur_x;
+                                        kernel_offset = g * output_c * kernel_size + c * kernel_size + kc * wt_h * wt_w + kh * wt_w + kw;
+
+                                        total += sint8_t(p_ifm[input_offset]) * sint8_t(p_wt[kernel_offset]);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (conv_cfg.kernel_bias)
+                            total += p_bs[output_c * g + c];
+
+                        p_ofm[output_offset] = total;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    /*
+
     const int pad_fm_nbyte = ou_n*ou_c*ou_h*ou_w;
     sint8_t* pad_ifm = nullptr;
     bool flag_pad = false;
@@ -80,17 +153,20 @@ void cpu_op_conv2d(APICFG* pCFG)
         in_w = in_w + pad_l + pad_r;
     }
 
-    /* 
     const int wt_extent_w = dia_w * (wt_w - 1) + 1;
     const int wt_extent_h = dia_h * (wt_h - 1) + 1;
     int outw = (w - wt_w) / stride_w + 1;
     int outh = (h - wt_h) / stride_h + 1;
 
-    index name 
+    index name
     ofm : c     h   w
     wt  : c1    h1  w1
     ofm : c2    h2  w2
     */
+
+
+    /*
+
     int c2, h2, w2;
 
     for (int c = 0; c < ou_c; ++c)
@@ -109,9 +185,9 @@ void cpu_op_conv2d(APICFG* pCFG)
                     {
                         for (int w1 = 0; w1 < wt_w; ++w1)
                         {
-                            c2              = wt_c; 
-                            h2              = (ou_h-1) * st_h + wt_h;
-                            w2              = (ou_w-1) * st_w + wt_w;
+                            c2              = c1; 
+                            h2              = (h-1) * st_h + h1;
+                            w2              = (w-1) * st_w + w1;
                             sint8_t iwt     = *(p_wt + c1*wt_h*wt_w + h1*wt_w + w1);
                             sint8_t ifm     = *(pad_ifm + c2*in_h*in_w + h2*in_w + w2);
                             piont           = piont + iwt * ifm;
@@ -150,6 +226,8 @@ void cpu_op_conv2d(APICFG* pCFG)
     {
         delete[] pad_ifm;
     }
+
+    */
 
 }
 

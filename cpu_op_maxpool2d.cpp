@@ -42,6 +42,27 @@ void maxpool_pad_int32(int* ofm, int* ifm, PoolCFG* pool_cfg)
 }
 
 
+int calc_max_i32(const int* input, int c, int h, int w, int cur_ch, int start_h,
+    int start_w, int end_h, int end_w)
+{
+    int max = 0;
+    max = input[cur_ch * h * w + start_h * w + start_w];
+    int tmp = 0;
+    for (int i = start_h; i < end_h; i++)
+    {
+        for (int j = start_w; j < end_w; j++)
+        {
+            tmp = input[cur_ch * h * w + i * w + j];
+            max = max > tmp ? max : tmp;
+        }
+    }
+
+    return max;
+}
+
+
+
+
 void cpu_op_maxpool2d(APICFG* pCFG)
 {
     PoolCFG pool_cfg        = pCFG->pool_cfg;
@@ -64,6 +85,79 @@ void cpu_op_maxpool2d(APICFG* pCFG)
     int             st_h    = pool_cfg.pool_stride_h;
     int             st_w    = pool_cfg.pool_stride_w;
 
+
+
+    int batch = in_n;
+    int channel = in_c;
+    int out_h = ou_h;
+    int out_w = ou_w;
+    int input_chw = channel * in_h * in_w;
+    int output_chw = channel * out_h * out_w;
+
+    int stride_h = st_h;
+    int stride_w = st_w;
+
+    int pad_h = pad_t;
+    int pad_w = pad_l;
+
+    int kernel_h = wt_h;
+    int kernel_w = wt_w;
+
+    int* input = p_ifm;
+    int* output = p_ofm;
+
+    for (int n = 0; n < batch; n++)
+    {
+        const int* input_cur = input + n * input_chw;
+        for (int c = 0; c < channel; c++)
+        {
+            for (int ph = 0; ph < out_h; ph++)
+            {
+                for (int pw = 0; pw < out_w; pw++)
+                {
+                    int offset = 0;
+                    int h_start = ph * stride_h - pad_h;
+                    int h_end = h_start + kernel_h;
+
+                    if (h_end > in_h + pad_h)
+                        h_end = in_h + pad_h;
+                    int w_start = pw * stride_w - pad_w;
+                    int w_end = w_start + kernel_w;
+
+                    if (w_end > in_w + pad_w)
+                        w_end = in_w + pad_w;
+
+                    h_start = h_start > 0 ? h_start : 0;
+                    w_start = w_start > 0 ? w_start : 0;
+                    h_end = h_end < in_h ? h_end : in_h;
+                    w_end = w_end < in_w ? w_end : in_w;
+
+                    offset = n * output_chw + c * out_h * out_w + ph * out_w + pw;
+
+                    int max = calc_max_i32(input_cur, channel, in_h, in_w, c, h_start, w_start,
+                        h_end, w_end);
+                    output[offset] = max;
+
+                }
+            }
+        }
+    }
+
+
+
+    /*
+    int outw = (w - pool_w) / stride_w + 1;
+    int outh = (h - pool_h) / stride_h + 1;
+
+    index name
+    ofm : c     h   w
+    wt  : c1    h1  w1
+    ofm : c2    h2  w2
+    */
+
+
+    /*
+
     const int pad_fm_nbyte = ou_n*ou_c*ou_h*ou_w;
     
     int* pad_ifm = nullptr;
@@ -82,18 +176,7 @@ void cpu_op_maxpool2d(APICFG* pCFG)
         in_w = in_w + pad_l + pad_r;
     }
 
-
-    /* 
-    int outw = (w - pool_w) / stride_w + 1;
-    int outh = (h - pool_h) / stride_h + 1;
-
-    index name 
-    ofm : c     h   w
-    wt  : c1    h1  w1
-    ofm : c2    h2  w2
-    */
     int c2, h2, w2;
-
     for (int c = 0; c < ou_c; ++c)
     {
         for (int h = 0; h < ou_h; ++h)
@@ -107,8 +190,8 @@ void cpu_op_maxpool2d(APICFG* pCFG)
                     for (int w1 = 0; w1 < wt_w; ++w1)
                     {
                         c2              = c;
-                        h2              = (ou_h-1) * st_h + wt_h;
-                        w2              = (ou_w-1) * st_w + wt_w;
+                        h2              = ou_h * st_h + h1;
+                        w2              = ou_w * st_w + w1;
                         int ifm         = *(pad_ifm + c2*in_h*in_w + h2*in_w + w2);
                         if(ifm > max_piont){
                             max_piont = ifm;
@@ -128,6 +211,8 @@ void cpu_op_maxpool2d(APICFG* pCFG)
     {
         delete[] pad_ifm;
     }
+
+    */
 }
 
 

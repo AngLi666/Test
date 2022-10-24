@@ -36,14 +36,14 @@ void cpu_api_conv2d_relu_maxpool2d(APICFG* pCFG){
 
 
     CvtCFG cvt_cfg;
-    pCFG->cvt_cfg           = cvt_cfg;
     cvt_cfg.ofm_shift       = pCFG->ofm_shift;
     cvt_cfg.input_n         = pool_cfg.output_n;
     cvt_cfg.input_c         = pool_cfg.output_c;
     cvt_cfg.input_h         = pool_cfg.output_h;
     cvt_cfg.input_w         = pool_cfg.output_w;
-    pCFG->cvt_cfg.p_ifm     = pPoolOFM;
-    pCFG->cvt_cfg.p_ofm     = pCFG->p_ofm;
+    cvt_cfg.p_ifm           = pPoolOFM;
+    cvt_cfg.p_ofm           = pCFG->p_ofm;
+    pCFG->cvt_cfg = cvt_cfg;
 
     cpu_op_conv2d(pCFG);
     cpu_op_relu(pCFG);

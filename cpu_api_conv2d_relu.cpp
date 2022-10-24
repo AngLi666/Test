@@ -26,14 +26,14 @@ void cpu_api_conv2d_relu(APICFG* pCFG){
 
 
     CvtCFG cvt_cfg;
-    pCFG->cvt_cfg           = cvt_cfg;
     cvt_cfg.ofm_shift       = pCFG->ofm_shift;
     cvt_cfg.input_n         = conv_cfg.output_n;
     cvt_cfg.input_c         = conv_cfg.output_c;
     cvt_cfg.input_h         = conv_cfg.output_h;
     cvt_cfg.input_w         = conv_cfg.output_w;
-    pCFG->cvt_cfg.p_ifm     = pConvOFM;
-    pCFG->cvt_cfg.p_ofm     = pCFG->p_ofm;
+    cvt_cfg.p_ifm           = pConvOFM;
+    cvt_cfg.p_ofm           = pCFG->p_ofm;
+    pCFG->cvt_cfg = cvt_cfg;
 
     cpu_op_conv2d(pCFG);
     cpu_op_relu(pCFG);
